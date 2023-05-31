@@ -61,6 +61,9 @@ public class LocalProcessor {
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException  {
         StringBuilder processorVersionBuilder = new StringBuilder();
+        if (file.length() == 0) {
+            throw new IllegalStateException();
+        }
         try (Scanner informationScanner = new Scanner(file)){
             while(informationScanner.hasNext()){
                 processorVersionBuilder.append(informationScanner.nextLine());
