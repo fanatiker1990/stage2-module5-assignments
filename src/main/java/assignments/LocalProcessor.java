@@ -20,7 +20,7 @@ public class LocalProcessor {
     private StringBuilder processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
-    private List<String> stringArrayList;
+    private LinkedList<String> stringArrayList=new LinkedList<>();
 
     public LocalProcessor(String processorName, Long period, StringBuilder processorVersion, Integer valueOfCheap,
                           Scanner informationScanner, LinkedList<String> stringArrayList) {
@@ -37,7 +37,7 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(LinkedList<String> stringList) {
-        if (!(stringList instanceof LinkedList<String>)) {
+        if (stringList == null) {
             throw new IllegalArgumentException("List is empty");
         }
         this.stringArrayList = new LinkedList<>(stringList);
