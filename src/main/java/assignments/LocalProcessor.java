@@ -37,6 +37,9 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(LinkedList<String> stringList) {
+        if (stringList.size()==0 ) {
+            throw new IllegalArgumentException("List is empty");
+        }
         this.stringArrayList = new LinkedList<>(stringList);
         for (String strings : stringArrayList) {
             if (strings == null || strings.equals("")) {
@@ -63,8 +66,6 @@ public class LocalProcessor {
                 processorVersionBuilder.append(informationScanner.nextLine());
             }
             processorVersion=processorVersionBuilder;
-        }catch (NullPointerException e){
-            throw new IllegalStateException(e.getMessage());
         }
     }
 }
