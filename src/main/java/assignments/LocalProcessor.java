@@ -15,21 +15,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocalProcessor {
-    private StringBuilder processorName;
+    private String processorName;
     private Long period = 100_000_000_000_00L;
-    private String processorVersion;
+    private StringBuilder processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
-    private static List<String> stringArrayList=new LinkedList<>();
+    private List<String> stringArrayList = new LinkedList<>();
 
-    public LocalProcessor(StringBuilder processorName, Long period, String processorVersion, Integer valueOfCheap,
+    public LocalProcessor(String processorName, Long period, StringBuilder processorVersion, Integer valueOfCheap,
                           Scanner informationScanner, LinkedList<String> stringArrayList) {
         this.processorName = processorName;
         this.period = period;
         this.processorVersion = processorVersion;
         this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
-        LocalProcessor.stringArrayList = stringArrayList;
+        this.stringArrayList = stringArrayList;
     }
 
     public LocalProcessor() {
@@ -37,33 +37,31 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(LinkedList<String> stringList) {
-        if (stringList == null) {
-            throw new IllegalArgumentException("List is empty");
-        }
-        stringArrayList = new LinkedList<>(stringList);
-        for (String strings : stringArrayList) {
-            System.out.println(strings.hashCode());
+        for (String s : stringList) {
+            if (s != null)
+                System.out.println(s.hashCode());
         }
     }
 
     @FullNameProcessorGeneratorAnnotation
     public String fullNameProcessorGenerator(LinkedList<String> stringList) {
-        StringBuilder fullName = new StringBuilder();
         for (String str : stringList) {
-            fullName.append(str).append(' ');
+            processorVersion.append(str).append(' ');
         }
-        return String.valueOf(fullName);
+        return String.valueOf(processorVersion);
     }
 
     @ReadFullProcessorNameAnnotation
-    public void readFullProcessorName(File file) throws FileNotFoundException  {
-        if (file != null) {
+    public void readFullProcessorName(File file) throws FileNotFoundException {
+        try {
             informationScanner = new Scanner(file);
-            while (informationScanner.hasNext()) {
-                processorVersion+=(informationScanner.nextLine());
+            while (informationScanner.hasNextLine()) {
+                processorVersion.append(informationScanner.nextLine());
             }
-        } else {
-            throw new IllegalArgumentException("File cannot be null");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            informationScanner.close();
         }
     }
 }
