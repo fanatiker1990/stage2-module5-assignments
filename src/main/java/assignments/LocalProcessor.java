@@ -39,6 +39,9 @@ public class LocalProcessor {
     public void listIterator(LinkedList<String> stringList) {
         this.stringArrayList = new LinkedList<>(stringList);
         for (String strings : stringArrayList) {
+            if (strings == null || strings.equals("")) {
+                throw new IllegalArgumentException("ProcessorName is invalid");
+            }
             System.out.println(strings.hashCode());
         }
     }
@@ -60,8 +63,8 @@ public class LocalProcessor {
                 processorVersionBuilder.append(informationScanner.nextLine());
             }
             processorVersion=processorVersionBuilder;
-        }catch (IllegalStateException e){
-            System.err.println(e.getMessage());
+        }catch (NullPointerException e){
+            throw new IllegalStateException(e.getMessage());
         }
     }
 }
