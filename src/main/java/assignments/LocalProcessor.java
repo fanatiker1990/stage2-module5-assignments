@@ -15,21 +15,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocalProcessor {
-    private String processorName;
+    private StringBuilder processorName;
     private Long period = 100_000_000_000_00L;
-    private StringBuilder processorVersion;
+    private String processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
-    private LinkedList<String> stringArrayList=new LinkedList<>();
+    private static List<String> stringArrayList=new LinkedList<>();
 
-    public LocalProcessor(String processorName, Long period, StringBuilder processorVersion, Integer valueOfCheap,
+    public LocalProcessor(StringBuilder processorName, Long period, String processorVersion, Integer valueOfCheap,
                           Scanner informationScanner, LinkedList<String> stringArrayList) {
         this.processorName = processorName;
         this.period = period;
         this.processorVersion = processorVersion;
         this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
-        this.stringArrayList = stringArrayList;
+        LocalProcessor.stringArrayList = stringArrayList;
     }
 
     public LocalProcessor() {
@@ -40,11 +40,8 @@ public class LocalProcessor {
         if (stringList == null) {
             throw new IllegalArgumentException("List is empty");
         }
-        this.stringArrayList = new LinkedList<>(stringList);
+        stringArrayList = new LinkedList<>(stringList);
         for (String strings : stringArrayList) {
-//            if (strings == null || strings.equals("")) {
-//                throw new IllegalArgumentException("ProcessorName is invalid");
-//            }
             System.out.println(strings.hashCode());
         }
     }
@@ -60,15 +57,13 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException  {
-        StringBuilder processorVersionBuilder = new StringBuilder();
-        if (file==null) {
-            throw new IllegalStateException();
-        }
-        try (Scanner informationScanner = new Scanner(file)){
-            while(informationScanner.hasNext()){
-                processorVersionBuilder.append(informationScanner.nextLine());
+        if (file != null) {
+            informationScanner = new Scanner(file);
+            while (informationScanner.hasNext()) {
+                processorVersion+=(informationScanner.nextLine());
             }
-            processorVersion=processorVersionBuilder;
+        } else {
+            throw new IllegalArgumentException("File cannot be null");
         }
     }
 }
