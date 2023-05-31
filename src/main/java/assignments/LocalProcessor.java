@@ -37,14 +37,14 @@ public class LocalProcessor {
 
     @ListIteratorAnnotation
     public void listIterator(LinkedList<String> stringList) {
-        if (stringList.size()==0 ) {
+        if (!(stringList instanceof LinkedList<String>)) {
             throw new IllegalArgumentException("List is empty");
         }
         this.stringArrayList = new LinkedList<>(stringList);
         for (String strings : stringArrayList) {
-            if (strings == null || strings.equals("")) {
-                throw new IllegalArgumentException("ProcessorName is invalid");
-            }
+//            if (strings == null || strings.equals("")) {
+//                throw new IllegalArgumentException("ProcessorName is invalid");
+//            }
             System.out.println(strings.hashCode());
         }
     }
@@ -61,7 +61,7 @@ public class LocalProcessor {
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException  {
         StringBuilder processorVersionBuilder = new StringBuilder();
-        if (file.length() == 0) {
+        if (file==null) {
             throw new IllegalStateException();
         }
         try (Scanner informationScanner = new Scanner(file)){
