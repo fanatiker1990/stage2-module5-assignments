@@ -17,19 +17,19 @@ import lombok.Setter;
 public class LocalProcessor {
     private String processorName;
     private Long period = 100_000_000_000_00L;
-    private String processorVersion;
+    private StringBuilder processorVersion;
     private Integer valueOfCheap;
     private Scanner informationScanner;
     private List<String> stringArrayList;
 
-    public LocalProcessor(String processorName, Long period, String processorVersion, Integer valueOfCheap,
+    public LocalProcessor(String processorName, Long period, StringBuilder processorVersion, Integer valueOfCheap,
                           Scanner informationScanner, LinkedList<String> stringArrayList) {
         this.processorName = processorName;
         this.period = period;
         this.processorVersion = processorVersion;
         this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
-        this.stringArrayList =stringArrayList;
+        this.stringArrayList = stringArrayList;
     }
 
     public LocalProcessor() {
@@ -38,7 +38,7 @@ public class LocalProcessor {
     @ListIteratorAnnotation
     public void listIterator(LinkedList<String> stringList) {
         this.stringArrayList = new LinkedList<>(stringList);
-        for (String strings:stringArrayList) {
+        for (String strings : stringArrayList) {
             System.out.println(strings.hashCode());
         }
     }
@@ -53,13 +53,15 @@ public class LocalProcessor {
     }
 
     @ReadFullProcessorNameAnnotation
-    public void readFullProcessorName(File file) throws FileNotFoundException {
-        informationScanner = new Scanner(file);
+    public void readFullProcessorName(File file) throws FileNotFoundException  {
         StringBuilder processorVersionBuilder = new StringBuilder();
-        while (informationScanner.hasNext()) {
-            processorVersionBuilder.append(informationScanner.nextLine());
+        try (Scanner informationScanner = new Scanner(file)){
+            while(informationScanner.hasNext()){
+                processorVersionBuilder.append(informationScanner.nextLine());
+            }
+            processorVersion=processorVersionBuilder;
+        }catch (IllegalStateException e){
+            System.err.println(e.getMessage());
         }
-        processorVersion = String.valueOf(processorVersionBuilder);
-
     }
 }
